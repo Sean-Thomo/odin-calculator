@@ -42,9 +42,10 @@ input{
   border-radius: 3em;
   color: #64ffda;
   background-color: #0a192f;
+  transition: transform .2s;
 }
 
 input:hover{
   cursor: pointer;
-
+  transform: scale(1.1);
 }
