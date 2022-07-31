@@ -45,7 +45,6 @@ main{
   color: #64ffda;
   padding: 1.3em;
   border-radius: 1em;
-  /* width: 4em; */
   box-shadow: 1px 1px 5px #64ffda;
 }
 
@@ -59,6 +58,14 @@ main{
 .btn:hover{
   cursor: pointer;
   transform: scale(1.1);
+}
+
+#calculation{
+  font-size: 10px;
+}
+
+#result{
+  font-size: 1em;
 }
 
 #result:hover{
