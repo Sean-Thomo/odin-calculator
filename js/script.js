@@ -1,5 +1,5 @@
-const numberButtons = document.querySelectorAll('.number');
-const operators = document.querySelectorAll('operator');
+const numberBtns = document.querySelectorAll('.number');
+const operationBtns = document.querySelectorAll('operator');
 const clearBtn = document.getElementById('clr');
 const removeNum = document.getElementById('remove');
 const equalsBtn = document.getElementById('equals');
@@ -15,7 +15,7 @@ clearBtn.addEventListener('click', clear);
 // equalsBtn.addEventListener('click', remove);
 
 // listen for click events in buttons
-numberButtons.forEach(number => {
+numberBtns.forEach(number => {
   number.addEventListener('click', () => {
     populateDisplay(number.textContent);
   });
@@ -23,12 +23,15 @@ numberButtons.forEach(number => {
 
 // display clicked numbers on screen
 function populateDisplay(value) {
+  operationOne += value.toString();
   operationScreen.textContent += value;
 }
 
-operators.forEach(operand => {
-  operand.addEventListener('click', addOperation(operand.textContent))
-})
+operationBtns.forEach(operator => {
+  operator.addEventListener('click', () => {
+    addOperation(number.textContent);
+  });
+});
 
 function addOperation(operand){
   if (currentOperation !== null) {
