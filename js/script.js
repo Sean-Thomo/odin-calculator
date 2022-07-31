@@ -1,23 +1,63 @@
-const buttons = document.querySelectorAll('.btn');
-const result = document.getElementById('result');
+const numberButtons = document.querySelectorAll('.number');
 const operators = document.querySelectorAll('operator');
+const clearBtn = document.getElementById('clr');
+const removeNum = document.getElementById('remove');
+const equalsBtn = document.getElementById('equals');
+const operationScreen = document.getElementById('calculation');
+const resultScreen = document.getElementById('result');
 
-let numbersOne = null;
-let numbersTwo = null;
-let total = 0;
-let operation = ''
+let operationOne = '';
+let operationTwo = '';
+let currentOperation = null;
 
-// listen for click events in number btns
-buttons.forEach(number => {
+equalsBtn.addEventListener('click', testCalc);
+clearBtn.addEventListener('click', clear);
+// equalsBtn.addEventListener('click', remove);
+
+// listen for click events in buttons
+numberButtons.forEach(number => {
   number.addEventListener('click', () => {
-    numbersOne += number.textContent;
     populateDisplay(number.textContent);
-  })
-})
+  });
+});
 
 // display clicked numbers on screen
 function populateDisplay(value) {
-  result.textContent += value;
+  operationScreen.textContent += value;
+}
+
+operators.forEach(operand => {
+  operand.addEventListener('click', addOperation(operand.textContent))
+})
+
+function addOperation(operand){
+  if (currentOperation !== null) {
+    testCalc()
+  }
+  operationOne = result.textContent;
+  result.textContent = `${operationOne} ${operand}`;
+}
+
+function testCalc() {
+  if (currentOperation === null) {
+    return;
+  }
+  if (currentOperation === "÷" && result.textContent == "") {
+    alert(`Can't divide by zero`);
+    return;
+  }
+  operationTwo = result.textContent;
+  result.textContent = operate(currentOperation, operationOne, operationTwo);
+  operationScreen.textContent = `${operationOne} ${currentOperation} ${operationTwo}`;
+  currentOperation = null;
+}
+
+function clear() {
+  operationOne = '';
+  operationTwo = '';
+  currentOperation = null;
+  operationScreen.textContent = '';
+  resultScreen.textContent = '';
 }
 
 function add(num1, num2){
