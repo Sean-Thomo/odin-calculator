@@ -1,18 +1,16 @@
 const numberBtns = document.querySelectorAll('.number');
-const operationBtns = document.querySelectorAll('operator');
+const operationBtns = document.querySelectorAll('.operator');
 const clearBtn = document.getElementById('clr');
-const removeNum = document.getElementById('remove');
+const removeBtn = document.getElementById('remove');
 const equalsBtn = document.getElementById('equals');
 const operationScreen = document.getElementById('calculation');
 const resultScreen = document.getElementById('result');
 
-let operationOne = '';
-let operationTwo = '';
-let currentOperation = null;
+let currentNumber = '';
+let prevNumber = '';
+let operator = null;
 
-equalsBtn.addEventListener('click', testCalc);
-clearBtn.addEventListener('click', clear);
-// equalsBtn.addEventListener('click', remove);
+equalsBtn.addEventListener('click', operate);
 
 // listen for click events in buttons
 numberBtns.forEach(number => {
@@ -23,43 +21,21 @@ numberBtns.forEach(number => {
 
 // display clicked numbers on screen
 function populateDisplay(value) {
-  operationOne += value.toString();
-  operationScreen.textContent += value;
+  currentNumber += value;
+  operationScreen.textContent = currentNumber;
 }
 
 operationBtns.forEach(operator => {
   operator.addEventListener('click', () => {
-    addOperation(number.textContent);
+    addOperation(operator.textContent);
   });
 });
 
-function addOperation(operand){
-  if (currentOperation !== null) {
-    testCalc()
-  }
-  operationOne = result.textContent;
-  result.textContent = `${operationOne} ${operand}`;
-}
-
-function testCalc() {
-  if (currentOperation === null) {
-    return;
-  }
-  if (currentOperation === "÷" && result.textContent == "") {
-    alert(`Can't divide by zero`);
-    return;
-  }
-  operationTwo = result.textContent;
-  result.textContent = operate(currentOperation, operationOne, operationTwo);
-  operationScreen.textContent = `${operationOne} ${currentOperation} ${operationTwo}`;
-  currentOperation = null;
-}
-
-function clear() {
-  operationOne = '';
-  operationTwo = '';
-  currentOperation = null;
-  operationScreen.textContent = '';
+function addOperation(operator){
+  operator = operator;
+  prevNumber = currentNumber;
+  operationScreen.textContent = `${prevNumber} ${operator}`;
+  currentNumber = '';
   resultScreen.textContent = '';
 }
 
@@ -79,16 +55,21 @@ function divide(num1, num2){
   return num1 / num2;
 }
 
-function operate(operator, num1, num2){
-  switch (true) {
-    case (operator == '+'):
-      return add(num1, num2);
-    case (operator == '-'):
-      return subtract(num1, num2);
-    case (operator == '*'):
-      return multiply(num1, num2);
-    case (operator == '/'):
-      if (num2 === 0) return null;
-      else return divide(num1, num2);
+function operate(){
+  switch (operator) {
+    case ('+'):
+      result = add(prevNumber, currentNumber);
+    case ('-'):
+      result = subtract(prevNumber, currentNumber);
+    case ('*' || 'x'):
+      result = multiply(prevNumber, currentNumber);
+    case ('/' || "÷"):
+      if (currentNumber === 0 ||currentNumber === '') alert(`Can't divide by zero`);
+      else result = divide(prevNumber, currentNumber);
+    default:
+      return
   }
+
+  operationScreen.textContent = '';
+  resultScreen.textContent = `${result}`
 }
