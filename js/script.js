@@ -8,9 +8,10 @@ const resultScreen = document.getElementById('result');
 
 let currentNumber = '';
 let prevNumber = '';
-let operator = null;
+let operator = '';
 
 equalsBtn.addEventListener('click', operate);
+clearBtn.addEventListener('click', clear);
 
 // listen for click events in buttons
 numberBtns.forEach(number => {
@@ -37,6 +38,14 @@ function addOperation(operator){
   operationScreen.textContent = `${prevNumber} ${operator}`;
   currentNumber = '';
   resultScreen.textContent = '';
+}
+
+function clear() {
+  currentNumber = '';
+  prevNumber = '';
+  operator = '';
+  resultScreen.textContent = 0;
+  operationScreen.textContent = '';
 }
 
 function add(num1, num2){
@@ -71,5 +80,5 @@ function operate(){
   }
 
   operationScreen.textContent = '';
-  resultScreen.textContent = result.toString();
+  resultScreen.textContent = result;
 }
