@@ -22,7 +22,7 @@ numberBtns.forEach(number => {
 // display clicked numbers on screen
 function populateDisplay(value) {
   currentNumber += value;
-  operationScreen.textContent = currentNumber;
+  resultScreen.textContent = currentNumber;
 }
 
 operationBtns.forEach(operator => {
@@ -40,19 +40,19 @@ function addOperation(operator){
 }
 
 function add(num1, num2){
-  return num1 + num2;
+  total = num1 + num2;
 }
 
 function subtract(num1, num2){
-  return num1 - num2;
+  total = num1 - num2;
 }
 
 function multiply(num1, num2){
-  return num1 * num2;
+  total = num1 * num2;
 }
 
 function divide(num1, num2){
-  return num1 / num2;
+  total = num1 / num2;
 }
 
 function operate(){
@@ -67,9 +67,9 @@ function operate(){
       if (currentNumber === 0 ||currentNumber === '') alert(`Can't divide by zero`);
       else result = divide(prevNumber, currentNumber);
     default:
-      return
+      break;
   }
 
   operationScreen.textContent = '';
-  resultScreen.textContent = `${result}`
+  resultScreen.textContent = result.toString();
 }
