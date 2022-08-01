@@ -27,9 +27,10 @@ function populateDisplay(value) {
     prevNumber = "";
     resultScreen.textContent = currentNumber;
   }
-  currentNumber += value;
-  resultScreen.textContent = currentNumber;
-
+  if (currentNumber.length  <= 9){
+    currentNumber += value;
+    resultScreen.textContent = currentNumber;
+  }
 }
 
 // listen for click events in operator buttons
@@ -43,8 +44,8 @@ function addOperation(operator){
   operator = operator;
   prevNumber = currentNumber;
   operationScreen.textContent = `${prevNumber} ${operator}`;
-  currentNumber = '';
-  resultScreen.textContent = '';
+  currentNumber = "";
+  resultScreen.textContent = "";
 }
 
 function clear() {
@@ -70,38 +71,40 @@ function removeNum(){
 }
 
 function add(num1, num2){
-  return num1 + num2;
+  res = num1 + num2;
 }
 
 function subtract(num1, num2){
-  return num1 - num2;
+  res = num1 - num2;
 }
 
 function multiply(num1, num2){
-  return num1 * num2;
+  res = num1 * num2;
 }
 
 function divide(num1, num2){
-  return num1 / num2;
+  res = num1 / num2;
 }
 
 function operate(){
-  
+  prevNumber = Number(prevNumber);
+  currentNumber = Number(currentNumber);
+
   if (operator == '+'){
-    resultScreen.textContent = add(prevNumber, currentNumber);
+    res = add(prevNumber, currentNumber);
   }else if (operator == '-'){
-    resultScreen.textContent = subtract(prevNumber, currentNumber);
+    res = subtract(prevNumber, currentNumber);
   }else if(operator == 'x'){
-    resultScreen.textContent = multiply(prevNumber, currentNumber);
+    res = multiply(prevNumber, currentNumber);
   } else if (operator == '÷'){
     if (currentNumber <= 0 || currentNumber === '') {
-      resultScreen.textContent =`Can't divide by zero`;
+      res = `Can't divide by zero`;
     }
     else {
-      resultScreen.textContent = divide(prevNumber, currentNumber);
+      res = divide(prevNumber, currentNumber);
     }
   }
-    
-  resultScreen.textContent = result;
-  alert(result);
+  operationScreen.textContent = "";
+  resultScreen.textContent = res;
+  // alert(result);
 }
