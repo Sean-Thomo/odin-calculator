@@ -86,32 +86,22 @@ function divide(num1, num2){
 }
 
 function operate(){
-  switch (operator) {
-    case (operator == '+'):
-      result = add(prevNumber, currentNumber);
-      showResult(result);
-    case ('-'):
-      result = subtract(prevNumber, currentNumber);
-      showResult(result);
-    case ('*'):
-      result = multiply(prevNumber, currentNumber);
-    case ('/'):
-      if (currentNumber <= 0 || currentNumber === '') {
-        resultScreen.textContent =`Can't divide by zero`;
-      }
-      else {
-        result = divide(prevNumber, currentNumber);
-        showResult(result);
-      }
-    default:
-      break;
+  
+  if (operator == '+'){
+    resultScreen.textContent = add(prevNumber, currentNumber);
+  }else if (operator == '-'){
+    resultScreen.textContent = subtract(prevNumber, currentNumber);
+  }else if(operator == 'x'){
+    resultScreen.textContent = multiply(prevNumber, currentNumber);
+  } else if (operator == '÷'){
+    if (currentNumber <= 0 || currentNumber === '') {
+      resultScreen.textContent =`Can't divide by zero`;
+    }
+    else {
+      resultScreen.textContent = divide(prevNumber, currentNumber);
+    }
   }
-
-  // resultScreen.textContent = result;
-}
-
-function showResult(result){
-  operationScreen.textContent = '';
-  // resultScreen.textContent = result;
-  alert(result)
+    
+  resultScreen.textContent = result;
+  alert(result);
 }
