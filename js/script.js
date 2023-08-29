@@ -1,110 +1,110 @@
-const numberBtns = document.querySelectorAll('.number');
+let runningTotal = 0;
+let buffer = "0";
+let previousOperator;
+
 const operationBtns = document.querySelectorAll('.operator');
-const clearBtn = document.getElementById('clr');
-const removeBtn = document.getElementById('remove');
-const equalsBtn = document.getElementById('equals');
 const operationScreen = document.getElementById('calculation');
-const resultScreen = document.getElementById('result');
+const result = document.querySelector('#result');
 
-let currentNumber = '';
-let prevNumber = '';
-let operator = '';
-
-equalsBtn.addEventListener('click', operate);
-clearBtn.addEventListener('click', clear);
-removeBtn.addEventListener('click', removeNum);
-
-// listen for click events in number buttons
-numberBtns.forEach(number => {
-  number.addEventListener('click', () => {
-    populateDisplay(number.textContent);
-  });
-});
-
-// display clicked numbers on screen
-function populateDisplay(value) {
-  if (currentNumber !== "" && prevNumber !== "" && operator !== ""){
-    prevNumber = "";
-    resultScreen.textContent = currentNumber;
-  }
-  if (currentNumber.length  <= 9){
-    currentNumber += value;
-    resultScreen.textContent = currentNumber;
-  }
+function buttonClick(value) {
+    if(isNaN(value)) {
+        handleSymbol(value);
+    } else {
+        handleNumber(value);
+    }
+    result.innerText = buffer;
 }
 
-// listen for click events in operator buttons
+function handleSymbol(symbol) {
+    switch (symbol) {
+        case 'C':
+            buffer = '0';
+            runningTotal = 0;
+            operationScreen.textContent = '';
+            break;
+        case '=':
+            if (previousOperator === null){
+                return
+            }
+            flushOperation(parseInt(buffer));
+            previousOperator = null;
+            buffer = runningTotal;
+            runningTotal = 0;
+            break
+        case '←':
+            if (buffer.length === 1) {
+                buffer = '0';
+            } else {
+                buffer = buffer.substring(0, buffer.length - 1)
+            }
+            break
+        case '+':
+        case '-':
+        case 'x':
+        case '÷':
+            handleMath(symbol);
+            break
+    }
+}
+
+function handleMath(symbol){
+    if(buffer === '0') {
+        return;
+    }
+
+    const intBuffer = parseInt(buffer);
+
+    if(runningTotal === 0){
+        runningTotal = intBuffer;
+    } else {
+        flushOperation(intBuffer);
+    }
+    previousOperator = symbol;
+    buffer = '0';
+}
+
+
+function flushOperation(intBuffer){
+    if (previousOperator === '+') {
+        runningTotal += intBuffer;
+    } else if (previousOperator === '-') {
+        runningTotal -= intBuffer;
+    } else if (previousOperator === 'x') {
+        runningTotal *= intBuffer;
+    } else if (previousOperator === '÷') {
+        if (runningTotal <= 0 || runningTotal === '') {
+            operationScreen.textContent = `Can't divide by zero`
+        }
+        runningTotal /= intBuffer
+    }
+    operationScreen.textContent += ` ${intBuffer}`;
+
+}
+
+
+function handleNumber(numberString) {
+    if(buffer === '0') {
+        buffer = numberString;
+    }else {
+        buffer += numberString;
+    }
+}
+
+
+function init() {
+    document.querySelector('.btn-grid').addEventListener('click', function(event){
+        buttonClick(event.target.innerText);
+    })
+}
+
 operationBtns.forEach(operator => {
-  operator.addEventListener('click', () => {
-    addOperation(operator.textContent);
-  });
+    operator.addEventListener('click', (e) => {
+        addOperation(e.target.innerText);
+    });
 });
 
 function addOperation(operator){
-  operator = operator;
-  prevNumber = currentNumber;
-  operationScreen.textContent = `${prevNumber} ${operator}`;
-  currentNumber = "";
-  resultScreen.textContent = "";
+    operationScreen.textContent = `${buffer} ${operator}`;
 }
 
-function clear() {
-  currentNumber = '';
-  prevNumber = '';
-  operator = '';
-  resultScreen.textContent = 0;
-  operationScreen.textContent = '';
-}
-
-function removeNum(){
-  if (currentNumber !== ''){
-    currentNumber = currentNumber.slice(0, -1);
-    resultScreen.textContent = currentNumber;
-    if (currentNumber === ''){
-      resultScreen.textContent = '0';
-    }
-  }
-  if (currentNumber === '' && prevNumber === '' && operator === ''){
-    prevNumber = prevNumber.slice(0, -1);
-    resultScreen.textContent = '0';
-  }
-}
-
-function add(num1, num2){
-  res = num1 + num2;
-}
-
-function subtract(num1, num2){
-  res = num1 - num2;
-}
-
-function multiply(num1, num2){
-  res = num1 * num2;
-}
-
-function divide(num1, num2){
-  res = num1 / num2;
-}
-
-function operate(){
-  prevNumber = Number(prevNumber);
-  currentNumber = Number(currentNumber);
-
-  if (operator == '+'){
-    res = add(prevNumber, currentNumber);
-  }else if (operator == '-'){
-    res = subtract(prevNumber, currentNumber);
-  }else if(operator == 'x'){
-    res = multiply(prevNumber, currentNumber);
-  } else if (operator == '÷'){
-    if (currentNumber <= 0 || currentNumber === '') {
-      res = `Can't divide by zero`;
-    }
-    else {
-      res = divide(prevNumber, currentNumber);
-    }
-  }
-  operationScreen.textContent = "";
-  resultScreen.textContent = res;
-  // alert(result);
-}
+init();
